@@ -1,0 +1,17 @@
+# --- AUTHORIZATION SERVER ---
+server:
+  port: 9000
+
+spring:
+  application:
+    name: bankproject-auth
+  docker:
+    compose:
+      enabled: false  # ojo: era **false** en el doc; acá boolean correcto
+
+# (Opcional si ya tenés el bean AuthorizationServerSettings)
+# spring:
+#   security:
+#     oauth2:
+#       authorizationserver:
+#         issuer: http://localhost:9000

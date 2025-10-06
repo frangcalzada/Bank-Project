@@ -1,0 +1,13 @@
+server:
+  port: 9000
+spring:
+  application:
+    name: Bank Project Authorization Server
+  docker:
+    compose:
+      enabled: false
+
+  security:
+    oauth2:
+      authorizationserver:
+        issuer: http://localhost:9000

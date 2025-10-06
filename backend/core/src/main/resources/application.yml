@@ -1,0 +1,36 @@
+# backend/core/src/main/resources/application.yml
+server:
+  port: 8080
+
+spring:
+  application:
+    name: bankproject-core
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Debe MATCHEAR EXACTO el 'iss' del token (AS issuer)
+          issuer-uri: ${AUTH_ISSUER:http://localhost:9000}
+  docker:
+    compose:
+      file: ../../Infra/compose.yaml          # relativo al módulo 'core'
+      lifecycle-management: start-and-stop
+
+  datasource:
+    url: jdbc:mysql://localhost:3307/bankdb?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false
+    username: root                            # o bankapp si definís usuario
+    password: root                            # idem
+  jpa:
+    hibernate:
+      ddl-auto: update                        # SOLO dev; en prod Flyway/Liquibase
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+app:
+  cors:
+    allowed-origins: "http://localhost:5173"
