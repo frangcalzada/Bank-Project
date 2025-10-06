@@ -1,0 +1,23 @@
+  spring:
+    docker:
+      compose:
+        file: /Users/franciscogarcia/Desktop/Fran/BankProject/Infra/compose.yaml
+        lifecycle-management: start-and-stop
+
+  server:
+    port: 8080
+
+    application:
+      name: bankproject-core
+
+
+    security:
+      oauth2:
+        resourceserver:
+          jwt:
+            issuer-uri: ${AUTH_ISSUER:http://localhost:9000}
+
+
+  app:
+    cors:
+      allowed-origins: "http://localhost:5173"

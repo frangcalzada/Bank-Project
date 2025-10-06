@@ -1,0 +1,49 @@
+{
+  "id": "f0f0aaaa-0000-4e00-8000-andesbank-env",
+  "name": "AndesBank - Local",
+  "values": [
+    {
+      "key": "auth_base",
+      "value": "http://localhost:9000",
+      "enabled": true
+    },
+    {
+      "key": "core_base",
+      "value": "http://localhost:8080",
+      "enabled": true
+    },
+    {
+      "key": "client_id",
+      "value": "bank-web",
+      "enabled": true
+    },
+    {
+      "key": "redirect_uri",
+      "value": "https://oauth.pstmn.io/v1/callback",
+      "enabled": true
+    },
+    {
+      "key": "scope_admin",
+      "value": "openid admin",
+      "enabled": true
+    },
+    {
+      "key": "scope_read",
+      "value": "openid accounts.read",
+      "enabled": true
+    },
+    {
+      "key": "customerId",
+      "value": "",
+      "enabled": true
+    },
+    {
+      "key": "accountId",
+      "value": "",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2025-10-06T15:25:00.000Z",
+  "_postman_exported_using": "Postman/Collection-2.1"
+}

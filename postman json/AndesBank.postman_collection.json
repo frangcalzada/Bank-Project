@@ -1,0 +1,325 @@
+{
+  "info": {
+    "name": "AndesBank (local)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "d3b3a8a0-0000-4e00-9000-andesbank-local"
+  },
+  "item": [
+    {
+      "name": "AUTH",
+      "item": [
+        {
+          "name": "OIDC Discovery",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{auth_base}}/.well-known/openid-configuration",
+              "host": [
+                "{{auth_base}}"
+              ],
+              "path": [
+                ".well-known",
+                "openid-configuration"
+              ]
+            }
+          }
+        },
+        {
+          "name": "JWKS (Public Keys)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{auth_base}}/oauth2/jwks",
+              "host": [
+                "{{auth_base}}"
+              ],
+              "path": [
+                "oauth2",
+                "jwks"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "CORE",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{core_base}}/actuator/health",
+              "host": [
+                "{{core_base}}"
+              ],
+              "path": [
+                "actuator",
+                "health"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Admin (openid admin)",
+          "item": [
+            {
+              "name": "Create Customer (POST)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"name\": \"Juan Pérez\", \"email\": \"juan.perez@example.com\"}"
+                },
+                "url": {
+                  "raw": "{{core_base}}/api/v1/customers",
+                  "host": [
+                    "{{core_base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "customers"
+                  ]
+                },
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "authorization_code",
+                      "type": "string"
+                    },
+                    {
+                      "key": "codeChallengeMethod",
+                      "value": "S256",
+                      "type": "string"
+                    },
+                    {
+                      "key": "authUrl",
+                      "value": "{{auth_base}}/oauth2/authorize",
+                      "type": "string"
+                    },
+                    {
+                      "key": "accessTokenUrl",
+                      "value": "{{auth_base}}/oauth2/token",
+                      "type": "string"
+                    },
+                    {
+                      "key": "clientId",
+                      "value": "{{client_id}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "scope",
+                      "value": "{{scope_admin}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "redirect_uri",
+                      "value": "{{redirect_uri}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test('Status is 201', function () { pm.response.to.have.status(201); });",
+                      "try { var json = pm.response.json(); if (json.id) { pm.environment.set('customerId', json.id); } } catch(e) {}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Open Account (POST)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"customerId\": \"{{customerId}}\", \"type\": \"CAJA_AHORRO\", \"currency\": \"ARS\"}"
+                },
+                "url": {
+                  "raw": "{{core_base}}/api/v1/accounts",
+                  "host": [
+                    "{{core_base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts"
+                  ]
+                },
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "authorization_code",
+                      "type": "string"
+                    },
+                    {
+                      "key": "codeChallengeMethod",
+                      "value": "S256",
+                      "type": "string"
+                    },
+                    {
+                      "key": "authUrl",
+                      "value": "{{auth_base}}/oauth2/authorize",
+                      "type": "string"
+                    },
+                    {
+                      "key": "accessTokenUrl",
+                      "value": "{{auth_base}}/oauth2/token",
+                      "type": "string"
+                    },
+                    {
+                      "key": "clientId",
+                      "value": "{{client_id}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "scope",
+                      "value": "{{scope_admin}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "redirect_uri",
+                      "value": "{{redirect_uri}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test('Status is 201', function () { pm.response.to.have.status(201); });",
+                      "try { var json = pm.response.json(); if (json.id) { pm.environment.set('accountId', json.id); } } catch(e) {}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Read (openid accounts.read)",
+          "item": [
+            {
+              "name": "Get Account by Id (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{core_base}}/api/v1/accounts/{{accountId}}",
+                  "host": [
+                    "{{core_base}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    "{{accountId}}"
+                  ]
+                },
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "authorization_code",
+                      "type": "string"
+                    },
+                    {
+                      "key": "codeChallengeMethod",
+                      "value": "S256",
+                      "type": "string"
+                    },
+                    {
+                      "key": "authUrl",
+                      "value": "{{auth_base}}/oauth2/authorize",
+                      "type": "string"
+                    },
+                    {
+                      "key": "accessTokenUrl",
+                      "value": "{{auth_base}}/oauth2/token",
+                      "type": "string"
+                    },
+                    {
+                      "key": "clientId",
+                      "value": "{{client_id}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "scope",
+                      "value": "{{scope_read}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "redirect_uri",
+                      "value": "{{redirect_uri}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test('Status is 200', function () { pm.response.to.have.status(200); });"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
